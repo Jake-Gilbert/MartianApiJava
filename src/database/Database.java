@@ -11,6 +11,10 @@ public class Database
     private final Map<String, MartianEntity> presentMartians = new HashMap<>();
     public String addMartian(String species, Clearance clearance)
     {
+        if (species == null || clearance == null)
+        {
+            return null;
+        }
         final var martian = new MartianEntity(species, clearance);
         final var id = UUID.randomUUID().toString();
         presentMartians.put(id, martian);
@@ -29,13 +33,22 @@ public class Database
         {
             return null;
         }
-        final var martian = presentMartians.get(id);
+        final var entity = presentMartians.get(id);
 
-        if (!martian.getClearanceRequired().authorisesClearanceLevel(clearance))
+        if (!entity.getClearanceRequired().authorisesClearanceLevel(clearance))
         {
             return null;
         }
-        return martian;
+        return entity;
+    }
+
+    public MartianEntity retrieveMartianWithoutClearance(String id)
+    {
+        if (!presentIds.contains(id))
+        {
+            return null;
+        }
+        return presentMartians.get(id);
     }
 
     //Permission has already been granted when this method is called
@@ -63,5 +76,10 @@ public class Database
             return true;
         }
         return false;
+    }
+
+    public int count()
+    {
+        return presentMartians.size();
     }
 }
