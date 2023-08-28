@@ -23,8 +23,6 @@ public class TestDatabase
     @Before
     public void init()
     {
-
-
         entityAndIdMap.put(XENOMORPH, database.addMartian(XENOMORPH, xenomorph.getClearanceRequired()));
         entityAndIdMap.put(fredTheMartian.getSpecies(), database.addMartian(fredTheMartian.getSpecies(), fredTheMartian.getClearanceRequired()));
         entityAndIdMap.put(theArbiter.getSpecies(), database.addMartian(theArbiter.getSpecies(), theArbiter.getClearanceRequired()));
