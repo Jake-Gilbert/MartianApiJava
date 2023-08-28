@@ -8,7 +8,7 @@ import java.util.*;
 public class Database
 {
     private final List<String> presentIds = new ArrayList<>();
-    private final Map<String, MartianEntity> presentMartians = new HashMap<>();
+    private final Map<String, MartianEntity> presentEntities = new HashMap<>();
     public String addMartian(String species, Clearance clearance)
     {
         if (species == null || clearance == null)
@@ -17,7 +17,7 @@ public class Database
         }
         final var martian = new MartianEntity(species, clearance);
         final var id = UUID.randomUUID().toString();
-        presentMartians.put(id, martian);
+        presentEntities.put(id, martian);
         presentIds.add(id);
         return id;
     }
@@ -33,7 +33,7 @@ public class Database
         {
             return null;
         }
-        final var entity = presentMartians.get(id);
+        final var entity = presentEntities.get(id);
 
         if (!entity.getClearanceRequired().authorisesClearanceLevel(clearance))
         {
@@ -48,7 +48,7 @@ public class Database
         {
             return null;
         }
-        return presentMartians.get(id);
+        return presentEntities.get(id);
     }
 
     //Permission has already been granted when this method is called
@@ -58,21 +58,21 @@ public class Database
         {
             return false;
         }
-        presentMartians.put(id, entity);
+        presentEntities.put(id, entity);
         return true;
     }
 
 
     private boolean removeEntityFromIdAndMartianCollection(String id, Clearance clearance)
     {
-        if (presentIds.contains(id) && presentMartians.containsKey(id))
+        if (presentIds.contains(id) && presentEntities.containsKey(id))
         {
-            if (!presentMartians.get(id).getClearanceRequired().authorisesClearanceLevel(clearance))
+            if (!presentEntities.get(id).getClearanceRequired().authorisesClearanceLevel(clearance))
             {
                 return false;
             }
             presentIds.remove(id);
-            presentMartians.remove(id);
+            presentEntities.remove(id);
             return true;
         }
         return false;
@@ -80,6 +80,6 @@ public class Database
 
     public int count()
     {
-        return presentMartians.size();
+        return presentEntities.size();
     }
 }
