@@ -15,7 +15,7 @@ public class TestApiResource
     private static final Path martianEntity = Path.of("resource/martianEntity.json");
     private static final Path updatedMartianEntity = Path.of("resource/updatedMartianEntity.json");
     private static final String NON_EXISTENT_ID = "Non-existent ID";
-    private static final String UPDATE_404_MESSAGE = "You don't have permission or the entity you have requested to update does not exist in the database";
+    private static final String UPDATE_404_MESSAGE = "Either you don't have permission or the entity you have requested to update does not exist in the database";
     private static final String RETRIEVAL_404_MESSAGE = "Either no entity exists with id [%s] or user lacks the permissions to access the entity";
     private final static String FAILED_DESERIALISE_MESSAGE = "Failed to deserialise entity. Please submit a valid JSON body";
 
