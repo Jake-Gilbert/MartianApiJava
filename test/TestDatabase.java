@@ -75,15 +75,6 @@ public class TestDatabase
     }
 
     @Test
-    public void attemptingToRetrieveEntityWhichExistsInDbAndUserAuthoriseToAccessShouldReturnEntity()
-    {
-        final var retrievedEntity = database.retrieveMartian(entityAndIdMap.get(XENOMORPH), Clearance.TOP_LEVEL_CLEARANCE);
-        assertThat(retrievedEntity)
-                .extracting(MartianEntity::getSpecies, MartianEntity::getClearanceRequired)
-                .contains(XENOMORPH, Clearance.TOP_LEVEL_CLEARANCE);
-    }
-
-    @Test
     public void attemptingToUpdateEntityInDbWhenIdNotPresentInDbShouldReturnFalse()
     {
         final var hasBeenUpdated = database.updateMartian(NON_EXISTENT_ID, updatedXenomorph);

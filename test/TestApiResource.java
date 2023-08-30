@@ -92,7 +92,7 @@ public class TestApiResource
 
         assertThat(response)
                 .extracting(Response::getStatusCode, Response::getMessage)
-                .contains(404, String.format(UPDATE_404_MESSAGE));
+                .contains(404, UPDATE_404_MESSAGE);
     }
 
     @Test
@@ -124,7 +124,35 @@ public class TestApiResource
     }
 
     @Test
-    public void callingDeleteEndpointWhenJsonIsValidShouldAddEntityToDbAndReturn200Response() throws IOException
+    public void callingDeleteEndpointWhenIdIsInvalidShouldReturn404Response() throws IOException
+    {
+        final var responseContainingId = apiResource.createMartianEntity(Files.readString(martianEntity));
+        final var response = apiResource.deleteMartianEntry(NON_EXISTENT_ID, Clearance.TOP_LEVEL_CLEARANCE);
+
+        assertThat(response)
+                .extracting(Response::getStatusCode, Response::getMessage)
+                .contains(404, "The entity you are trying to delete is either not present in the database or you lack permissions to execute the deletion");
+        assertThat(apiResource.retrieveMartianEntity(responseContainingId.getId(), Clearance.TOP_LEVEL_CLEARANCE))
+                .extracting(Response::getStatusCode, Response::getMessage)
+                .contains(200);
+    }
+
+    @Test
+    public void callingDeleteEndpointWhenClearanceIsInsufficientShouldReturn404Response() throws IOException
+    {
+        final var responseContainingId = apiResource.createMartianEntity(Files.readString(martianEntity));
+        final var response = apiResource.deleteMartianEntry(responseContainingId.getId(), Clearance.ACCESS_RESTRICTED);
+
+        assertThat(response)
+                .extracting(Response::getStatusCode, Response::getMessage)
+                .contains(404, "The entity you are trying to delete is either not present in the database or you lack permissions to execute the deletion");
+        assertThat(apiResource.retrieveMartianEntity(responseContainingId.getId(), Clearance.TOP_LEVEL_CLEARANCE))
+                .extracting(Response::getStatusCode, Response::getMessage)
+                .contains(200);
+    }
+
+    @Test
+    public void callingDeleteEndpointWheIdIsValidAndClearanceSufficientShouldAddEntityToDbAndReturn200Response() throws IOException
     {
         final var responseContainingId = apiResource.createMartianEntity(Files.readString(martianEntity));
         final var response = apiResource.deleteMartianEntry(responseContainingId.getId(), Clearance.TOP_LEVEL_CLEARANCE);

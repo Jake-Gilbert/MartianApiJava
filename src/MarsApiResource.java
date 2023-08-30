@@ -47,7 +47,7 @@ public class MarsApiResource
         final var entityDeleted = database.deleteMartian(id, clearance);
         if (!entityDeleted)
         {
-            return new Response("Entity with this id not found in database", 404);
+            return new Response("The entity you are trying to delete is either not present in the database or you lack permissions to execute the deletion", 404);
         }
         return new Response(String.format("Deleted martian from db with id [%s]", id), 200);
     }
